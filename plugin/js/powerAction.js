@@ -32,11 +32,11 @@ function PowerAction(inContext, inSettings) {
 		// (_m) check priority
 		if (priority == 'Dummy'){
 			//Dummy-Buttons haben keine Funktion
-			console.log('Button pressed: ' + priority);			
+			console.log('Button pressed: ' + priority);
 			return;
 		} else if (priority == 'Black'){
 			console.log('Button pressed: ' + priority);
-		} else if (priority == 'Schauspieler' && erzählerActive){
+		} else if ((priority == 'Schauspieler' || priority == 'Rescue' ) && erzählerActive){
 			//Schauspieler-Buttons deaktivieren während Erzähler aktiv ist
 			console.log('Button pressed: ' + priority + ', but the Erzähler is active: ' + erzählerActive);	
 			return;
@@ -114,7 +114,7 @@ function PowerAction(inContext, inSettings) {
 				setActionState(inContext, targetState ? 0 : 1);
 				objCache.power = targetState;
 				console.log('targetState: ' + targetState);
-				if(priority == 'Erzähler'){					
+				if(priority == 'Erzähler' || (priority == 'Rescue' && !erzählerActive)){					
 					erzählerActive = targetState;
 					console.log('erzählerActive changed to: ' + erzählerActive);
 				}
@@ -128,7 +128,7 @@ function PowerAction(inContext, inSettings) {
 		
 		
 		// If Erzähler, additionally switch off the Group Schauspieler
-		if (priority == 'Erzähler') {
+		if (priority == 'Erzähler' || (priority == 'Rescue' && !erzählerActive)) {
 			var blackSettings = JSON.parse('{"bridge":"ecb5fafffe830ed7","light":"g-3"}');
 			
 			// Create a bridge instance

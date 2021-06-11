@@ -181,7 +181,6 @@ function connectElgatoStreamDeckSocket(inPort, inPluginUUID, inRegisterEvent, in
                     // Send manual onKeyUp event to action
                     if (context in actions) {
                         actions[context].onKeyUp(context);
-						
                     }
                 }
             }
