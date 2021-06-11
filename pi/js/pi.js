@@ -17,7 +17,6 @@ function PI(inContext, inLanguage, inStreamDeckVersion, inPluginVersion) {
     // Add event listener
     document.getElementById('bridge-select').addEventListener('change', bridgeChanged);
     document.getElementById('light-select').addEventListener('change', lightsChanged);
-	document.getElementById('override-select').addEventListener('change', overrideChanged);
     document.addEventListener('saveBridge', setupCallback);
 
     // Load the localizations
@@ -91,9 +90,6 @@ function PI(inContext, inLanguage, inStreamDeckVersion, inPluginVersion) {
 
             // Load the lights
             loadLights();
-			
-			// (_m) Load priorities / override
-			loadPriority();
         }
         else {
             // Show the 'No Bridges' option
@@ -205,18 +201,7 @@ function PI(inContext, inLanguage, inStreamDeckVersion, inPluginVersion) {
             //Load the scenes
             instance.loadScenes();
         }
-		
-		
     }
-
-	// (_m) load Priority into selection box
-	function loadPriority(){
-		// (_m) Check if a priority is already setup
-        if (settings.priority !== undefined) {
-            // Select the currently configured priority
-            document.getElementById('override-select').value = settings.priority;
-        }
-	}	
 
     // Function called on successful bridge pairing
     function setupCallback(inEvent) {
@@ -254,13 +239,11 @@ function PI(inContext, inLanguage, inStreamDeckVersion, inPluginVersion) {
     }
 
     // Light select changed
-    function lightsChanged(inEvent) {	
+    function lightsChanged(inEvent) {
         if (inEvent.target.value === 'no-lights' || inEvent.target.value === 'no-groups') {
             // If no light or group was selected, do nothing
-			
         }
         else if (inEvent.detail !== undefined) {
-			
             // If the light was changed via code
             if (inEvent.detail.manual === true) {
                 // do nothing
@@ -269,7 +252,7 @@ function PI(inContext, inLanguage, inStreamDeckVersion, inPluginVersion) {
         else {
             settings.light = inEvent.target.value;
             instance.saveSettings();
-			
+
             // If this is a scene PI
             if (instance instanceof ScenePI) {
                 //Load the scenes
@@ -277,23 +260,6 @@ function PI(inContext, inLanguage, inStreamDeckVersion, inPluginVersion) {
             }
         }
     }
-	
-	// (_m) Override / priority setting changed
-	function overrideChanged(inEvent) {
-		// var overrideValue = JSON.stringify(inEvent.target.value);
-		// const json = {
-			// "action": getAction(),
-			// "event": "sendToPlugin",
-			// "context": inContext,
-			// "payload": {overrideValue}
-		// };
-		// console.log('overrideChanged: ' + JSON.stringify(json));
-		// websocket.send(JSON.stringify(json));
-		
-		settings.priority = inEvent.target.value;
-        instance.saveSettings();
-		console.log('settings changed: ' + JSON.stringify(settings));
-	}
 
     // Private function to return the action identifier
     function getAction() {
